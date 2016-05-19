@@ -18,6 +18,9 @@ app.get("/", function(solicitud, respuesta){
 });
 
 app.get("/login", function(solicitud,respuesta){	
+	User.find(function(error, documento){
+		console.log(documento);
+	});
 	respuesta.render("login");
 });
 
