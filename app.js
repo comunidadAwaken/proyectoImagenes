@@ -26,7 +26,10 @@ app.get("/login", function(solicitud,respuesta){
 
 app.post("/users", function(solicitud, respuesta){
 	
-	var user = new User({email:solicitud.body.email, password:solicitud.body.pass });
+	var user = new User({email:solicitud.body.email, 
+							password:solicitud.body.pass, 
+							password_confirmation:solicitud.body.password_confirmation 
+						});
 	user.save(function(){
 		respuesta.send("Guardamos tus datos");
 	});
