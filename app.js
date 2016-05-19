@@ -3,6 +3,13 @@ var express = require("express");
 
 var app = express(); // tomamos el objeto
 
+//archivos staticos css
+app.use("/estatico",express.static('public'));//middlewares
+app.use(express.static('assets'));//middlewares
+
+
+
+
 app.set("view engine", "jade");//implementa jade
 
 app.get("/", function(solicitud, respuesta){
