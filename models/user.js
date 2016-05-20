@@ -4,14 +4,18 @@ var Schema = mongoose.Schema;
 //conexion con la base de datos
 mongoose.connect("mongodb://localhost/fotos");
 
+var posibles_valores = ["M", "F"];
+var email_match = [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, "Coloca un email valido"];
+
 var user_schema = new Schema({
 	name: String,
 	last_name: String,
-	username: String,
-	password: String,
-	age: Number,
-	email: String,
-	date_of_birth: Date
+	username: {type:String, required:true, maxlength:[50, "Username muy grande"]},
+	password: {type:String,minlength:[8,"El password es muy corto"]},
+	age: {type:Number, min: [6,"La edad no puede ser menos que 5"], max: [100, "La edad no debe superar los 100"]},
+	email:{type: String,required:"El Correo es Obligatorio",match:email_match},
+	date_of_birth: Date,
+	sex: {type:String, enum:{values: posibles_valores, message: "Opción no válida"} }
 	});
 
 user_schema.virtual("password_confirmation").get(function(){
