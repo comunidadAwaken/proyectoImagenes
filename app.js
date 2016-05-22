@@ -26,16 +26,24 @@ app.get("/login", function(solicitud,respuesta){
 
 app.post("/users", function(solicitud, respuesta){
 	
-	var user = new User({email:solicitud.body.email, 
+	var user = new User({
+							email:solicitud.body.email, 
 							password:solicitud.body.pass, 
 							password_confirmation:solicitud.body.password_confirmation,
 							username:solicitud.body.username
 						});
-	user.save(function(error){
+	/*user.save(function(error){
 		if (error) {
 			console.log(String(error));
 		}
 		respuesta.send("Guardamos tus datos");
+	});*/
+	//promises lo que se usa hoy en dia 
+	user.save().then(function(usuarios){
+		respuesta.send("Guardamos tus datos");
+	}, function(error){
+		console.log(String(error));
+		respuesta.send("No pudimos guardar la información");
 	});
 	
 
