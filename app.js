@@ -17,10 +17,14 @@ app.get("/", function(solicitud, respuesta){
 	respuesta.render("index");
 });
 
-app.get("/login", function(solicitud,respuesta){	
+app.get("/signup", function(solicitud,respuesta){	
 	User.find(function(error, documento){
 		console.log(documento);
 	});
+	respuesta.render("signup");
+});
+
+app.get("/login", function(solicitud,respuesta){		
 	respuesta.render("login");
 });
 
@@ -47,6 +51,14 @@ app.post("/users", function(solicitud, respuesta){
 	});
 	
 
+});
+
+app.post("/sessions", function(solicitud, respuesta){
+	
+		User.findOne({email:solicitud.body.email , password:solicitud.body.pass },"username email", function(error, documento){
+			console.log(documento);
+			respuesta.send("Listos Hola Mundo");
+	});
 });
 
 app.listen(8080);
