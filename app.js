@@ -67,7 +67,7 @@ app.post("/sessions", function(solicitud, respuesta){
 	
 		User.findOne({email:solicitud.body.email , password:solicitud.body.pass },"username email", function(error, user){
 			solicitud.session.user_id = user._id;
-			respuesta.send("Hola mundo");
+			respuesta.redirect("/app");
 	});
 });
 
