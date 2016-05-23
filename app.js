@@ -3,6 +3,8 @@ var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var User = require("./models/user").User;
 var session = require("express-session");
+var router_app = require("./routes_app");
+var session_middleware = require("./middlewares/session");
 
 var app = express(); // tomamos el objeto
 
@@ -69,4 +71,6 @@ app.post("/sessions", function(solicitud, respuesta){
 	});
 });
 
+app.use("/app",session_middleware);
+app.use("/app", router_app);
 app.listen(8080);
