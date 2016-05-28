@@ -2,7 +2,8 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var User = require("./models/user").User;
-var session = require("express-session");
+//var session = require("express-session");
+var cookieSession = require("cookie-session");
 var router_app = require("./routes_app");
 var session_middleware = require("./middlewares/session");
 
@@ -14,11 +15,16 @@ app.use("/public",express.static('public'));//archivos staticos css
 app.use(bodyParser.json());// para peticiones application/json
 app.use(bodyParser.urlencoded({extended: true}));// parsear tambien arreglos
 app.use(express.static('assets'));//middlewares
-app.use(session({
+app.use(cookieSession({
+	name:"session",
+	keys: ["llave-1", "llave-2"]
+}));
+/*app.use(session({
 	secret: "123byuhbsdah12ub",
 	resave: false, // la session no se vuelve a guardar 
 	saveUninitialized: false // no se guardara aun cuando esta inicializada
-}));
+}));*/
+
 
 app.set("view engine", "jade");//implementa jade
 
