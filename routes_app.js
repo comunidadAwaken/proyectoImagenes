@@ -42,7 +42,10 @@ router.route("/imagenes/:id")
 router.route("/imagenes")
 	//mostrar o tomar
 	.get(function(solicitud, respuesta){
-
+		Imagen.find({},function(error, imagenes){
+			if (error){respuesta.render("/app");return;}
+			respuesta.render("app/imagenes/index", {imagenes:imagenes});
+		});
 	})
 	//crear una nueva imagen 
 	.post(function(solicitud, respuesta){
