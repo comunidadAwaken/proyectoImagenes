@@ -2,6 +2,8 @@ var express = require("express");
 var Imagen = require("./models/imagenes");
 var router = express.Router();//administra las rutas
 
+var image_finder_middleware = require("./middlewares/find_image");
+
 
 router.get("/", function(solicitud, respuesta){
 	/*Busca al usuario*/
@@ -16,27 +18,43 @@ router.get("/imagenes/new", function(solicitud,respuesta){
 
 });
 
+router.all("/imagenes/:id*", image_finder_middleware);
+
 // muestra formulario para editar
 router.get("/imagenes/:id/edit", function(solicitud,respuesta){
-
+	respuesta.render("app/imagenes/edit");
 });
 
 
 router.route("/imagenes/:id")
 	//mostrar o tomar
 	.get(function(solicitud, respuesta){
-		Imagen.findById(solicitud.params.id,function(error,imagen){
-			respuesta.render("app/imagenes/show",{imagen:imagen});
-		})
-		
+		respuesta.render("app/imagenes/show");		
 	})
 	//actualizar 
 	.put(function(solicitud, respuesta){
-
+		respuesta.locals.imagen.title = solicitud.body.title;
+			respuesta.locals.imagen.save(function(error){
+				if(!error){
+					respuesta.render("app/imagenes/show");
+				}else{
+					respuesta.render("app/imagenes/"+solicitud.params.id+"/edit");
+				}
+			});
+			respuesta.render("app/imagenes/show");
+		
 	})
 	//eliminar foto
 	.delete(function(solicitud,respuesta){
 
+		Imagen.findOneAndRemove({_id: solicitud.params.id}, function(error){
+				if (!error) {
+					respuesta.redirect("/app/imagenes");
+				}else{
+					console.log(error);
+					respuesta.redirect("/app/imagenes"+solicitud.params.id);
+				}
+		});
 	});
 
 router.route("/imagenes")

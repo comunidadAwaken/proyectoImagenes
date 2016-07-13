@@ -7,14 +7,20 @@ var cookieSession = require("cookie-session");
 var router_app = require("./routes_app");
 var session_middleware = require("./middlewares/session");
 
+var methodOverride = require("method-override");// middlewares
+
 var app = express(); // tomamos el objeto
 
 
 //middlewares
+
 app.use("/public",express.static('public'));//archivos staticos css
 app.use(bodyParser.json());// para peticiones application/json
 app.use(bodyParser.urlencoded({extended: true}));// parsear tambien arreglos
 app.use(express.static('assets'));//middlewares
+
+app.use(methodOverride("_method"));
+
 app.use(cookieSession({
 	name:"session",
 	keys: ["llave-1", "llave-2"]
